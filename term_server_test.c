@@ -86,7 +86,7 @@ int main(int argc , char *argv[])
    //Convert it Back into Picture
    printf("Converting Byte Array to Picture\n");
    FILE *image;
-   image = fopen("c1.png", "w");
+   image = fopen("c1.bmp", "w");
    fwrite(p_array, 1, sizeof(p_array), image);
    fclose(image);
 
