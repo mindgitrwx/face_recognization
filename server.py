@@ -1,39 +1,30 @@
+#!/usr/bin/python
 import socket
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(("", 5005))
-server_socket.listen(5)
-import os
+import cv2
+import numpy
 
-print("wating......")
-client_socket, address = server_socket.accept()
-print "Conencted to - ",address,"\n"
-while (1):
-    choice = client_socket.recv(1024)
-    choice = int(choice)
-    if(choice == 1):
-        data = client_socket.recv(1024)
-        print "The following data was received - ",data
-        print "Opening file - ",data
-        fp = open(data,'r')
-        strng = fp.read()
-        size = os.path.getsize(data)
-        size = str(size)
-        client_socket.send(size)
-        client_socket.send (strng)
-        #client_socket.close()
+def recvall(sock, count):
+    buf = b''
+    while count:
+        newbuf = sock.recv(count)
+        if not newbuf: return None
+        buf += newbuf
+        count -= len(newbuf)
+    return buf
 
-    if (choice == 2 or choice == 3):
-        data = client_socket.recv(1024)
-        print "The following data was received - ",data
-        print "Opening file - ",data
-        img = open(data,'r')
-        while True:
-            strng = img.readline(512)
-            if not strng:
-                break
-            client_socket.send(strng)
-        img.close()
-        print "Data sent successfully"
-        exit()
-        #data = 'viewnior '+data
-        #os.system(data)
+TCP_IP = 'localhost'
+TCP_PORT = 5001
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((TCP_IP, TCP_PORT))
+s.listen(True)
+conn, addr = s.accept()
+
+length = recvall(conn,16)
+stringData = recvall(conn, int(length))
+data = numpy.fromstring(stringData, dtype='uint8')
+s.close()
+decimg=cv2.imdecode(data,1)
+cv2.imshow('SERVER',decimg)
+cv2.waitKey(0)
+cv2.destroyAllWindows() 
