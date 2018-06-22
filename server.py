@@ -32,34 +32,41 @@ print("TCPServer Waiting for client on port 5000")
 
 while True:
 
-
+    
     client_socket, address = server_socket.accept()
 
     print("I got a connection from ", address)
 
+    fileName = fileName()
     data = None
+    
+    check = client_socket.recv(1024)
+   
+    if sys.getsizeof(check) > 100 :        #it's image
+        while True:
+            img_data = check
+            data = img_data
+            if img_data:
+                while img_data:
+                    print("recving Img...")
+                    img_data = client_socket.recv(1024)
+                    data += img_data
+                else:
+                    break
 
+        img_file = open(fileName, "wb")
+        print("finish img recv")
+        print(sys.getsizeof(data))
+        img_file.write(data)
+        img_file.close()
+        print("Finish ")
 
-    while True:
-        img_data = client_socket.recv(1024)
-        data = img_data
-        if img_data:
-            while img_data:
-                print("recving Img...")
-                img_data = client_socket.recv(1024)
-                data += img_data
-            else:
-                break
-
-
-
-    img_fileName = fileName()
-    img_file = open(img_fileName, "wb")
-    print("finish img recv")
-    print(sys.getsizeof(data))
-    img_file.write(data)
-    img_file.close()
-    print("Finish ")
+    else :  #it's text
+        print("we recved Txt")
+        txt_file = open(fileName, 'w')
+        txt_file.write(check)
+        f.close()
+        print("Finish ")
 
 
 
