@@ -9,7 +9,7 @@ import sys
 
 
 
-def fileName():
+def fileName(flag):
     dte = time.localtime()
     Year = dte.tm_year
     Mon = dte.tm_mon
@@ -18,8 +18,11 @@ def fileName():
     Hour = dte.tm_hour
     Min = dte.tm_min
     Sec = dte.tm_sec
-    imgFileName = str(Year) + '_' + str(Mon) + '_' + str(Day) + '_' + str(Hour) + '_' + str(Min) + '_' + str(
-        Sec) + '.jpg'
+    if flag==0:
+        imgFileName = str(Year) + '_' + str(Mon) + '_' + str(Day) + '_' + str(Hour) + '_' + str(Min) + '_' + str(Sec) + '.jpg'
+    elif flag==1:
+        imgFileName = str(Year) + '_' + str(Mon) + '_' + str(Day) + '_' + str(Hour) + '_' + str(Min) + '_' + str(Sec) + '.txt'
+
     return imgFileName
 
 
@@ -38,7 +41,7 @@ while True:
 
     print("I got a connection from ", address)
 
-    fileName = fileName()
+    fileName = fileName(flag)
     data = None
 
    # extension = client_socket.recv(1024)
