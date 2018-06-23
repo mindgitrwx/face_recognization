@@ -71,8 +71,10 @@ while True:
         f.close()
         print("Finish ")
         flag=0
-
     
+    
+    fileName=""
+   
 
 
 client_socket.close()
