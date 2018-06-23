@@ -69,9 +69,12 @@ while True:
     elif flag == 1  :  #it's text
         print("I got some text for you!")
         innerText = client_socket.recv(1024)
+        print (innerText)
+        innerText = str(innerText)
+        print (innerText)
         txt_file = open(fileName, 'w')
-        txt_file.write(inneerText)
-        f.close()
+        txt_file.write(innerText)
+        txt_file.close()
         print("Finish ")
         flag=0
     
