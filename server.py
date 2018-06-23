@@ -40,13 +40,14 @@ while True:
     fileName = fileName()
     data = None
     
-    check = client_socket.recv(1024)
-   
-    if sys.getsizeof(check) > 100 :        #it's image
+    extension = (int)(client_socket.recv(1024))
+
+    if extension == 1 :        #it's image
+        print("I got some image for you!")
         while True:
-            img_data = check
+            img_data = client_socket.recv(1024)
             data = img_data
-            if img_data:
+            if img_data :
                 while img_data:
                     print("recving Img...")
                     img_data = client_socket.recv(1024)
@@ -55,20 +56,20 @@ while True:
                     break
 
         img_file = open(fileName, "wb")
-        print("finish img recv")
         print(sys.getsizeof(data))
         img_file.write(data)
         img_file.close()
         print("Finish ")
 
-    else :  #it's text
-        print("we recved Txt")
+    elif extension == 2  :  #it's text
+        print("I got some text for you!")
+        innerText = client_socket.recv(1024)
         txt_file = open(fileName, 'w')
-        txt_file.write(check)
+        txt_file.write(inneerText)
         f.close()
         print("Finish ")
 
-
+    
 
 
 client_socket.close()
