@@ -12,7 +12,9 @@ while True:
 		# connect to server.....
 		client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		client_socket.connect(("18.191.105.248", 5001))
-		print("connecting...")   
+		print("connecting...")
+
+		client_socket.send(1)  #notice that client will send 'image'
 
 		# file open 
 		print("open  " + var1)
@@ -35,16 +37,19 @@ while True:
 		client_socket.connect(("18.191.105.248", 5001))
 		print("connecting...")  
 		
+		client_socket.send(2)  #notice that client will send 'text'
+
 		f = open("output.txt", 'r')
-		line = (int)(f.read())
+		innerText = f.read()
+		
 		f.close()
 		
-		clinet_socket.send(line)
+		clinet_socket.send(innerText)
 		client_socket_close()
 				
 		break
 	except:
-		print("file is not created... )
+		print("file is not created...") 
 		time.sleep(3)
 
 
@@ -61,7 +66,8 @@ while True:
 		client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)		
 		client_socket.connect(("18.191.105.248", 5001))
 		print("connecting...")  
-		
+		client_socket.send(1)  #notice that client will send 'image'
+
 		# file open 
 		print("open  " + var1)
 		file = open(var1, "rb")
@@ -83,10 +89,12 @@ while True:
 		print("connecting...")  
 		
 		f = open("output.txt", 'r')
-		line = (int)(f.read())
+		client_socket.send(2)  #notice that client will send 'text'
+
+		innerText = f.read()
 		f.close()
 		
-		clinet_socket.send(line)
+		clinet_socket.send(innerText)
 		client_socket_close()
 
 	else: 
@@ -97,7 +105,6 @@ while True:
 	time.sleep(3)
 	
 		
-
 
 
 
