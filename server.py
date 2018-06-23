@@ -9,7 +9,7 @@ import sys
 
 
 
-def fileName(flag):
+def fileNameCreater(flag):
     dte = time.localtime()
     Year = dte.tm_year
     Mon = dte.tm_mon
@@ -41,7 +41,7 @@ while True:
 
     print("I got a connection from ", address)
 
-    fileName = fileName(flag)
+    fileName = fileNameCreater(flag)
     data = None
 
    # extension = client_socket.recv(1024)
