@@ -30,6 +30,7 @@ server_socket.listen(5)
 
 print("TCPServer Waiting for client on port 5000")
 
+flag=0
 while True:
 
     
@@ -39,10 +40,10 @@ while True:
 
     fileName = fileName()
     data = None
-    
-    extension = (int)(client_socket.recv(1024))
 
-    if extension == 1 :        #it's image
+   # extension = client_socket.recv(1024)
+   # extension = int(extension)
+    if flag == 0 :        #it's image
         print("I got some image for you!")
         while True:
             img_data = client_socket.recv(1024)
@@ -60,14 +61,16 @@ while True:
         img_file.write(data)
         img_file.close()
         print("Finish ")
+        flag=1
 
-    elif extension == 2  :  #it's text
+    elif flag == 1  :  #it's text
         print("I got some text for you!")
         innerText = client_socket.recv(1024)
         txt_file = open(fileName, 'w')
         txt_file.write(inneerText)
         f.close()
         print("Finish ")
+        flag=0
 
     
 
