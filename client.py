@@ -4,107 +4,115 @@ import os
 import time
 import datetime
 
-var1 = 'cEdDG.png'
+ipadr = "18.222.182.247"
+var1 = 'test.png'
 
-# repeat until file created 
-while True:
-	try:
-		# connect to server.....
-		client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		client_socket.connect(("18.191.105.248", 5001))
-		print("connecting...")
-
-		client_socket.send(1)  #notice that client will send 'image'
-
-		# file open 
-		print("open  " + var1)
-		file = open(var1, "rb")
-		img_size = os.path.getsize(var1)
-		img = file.read(img_size)  
-		file.close()
-
-		# save file-change time
-		mtime = os.path.getmtime(var1)
-		    
-		# save the image in the socket 
-		client_socket.sendall(img)
-
-		client_socket.close()
-		print("Finish Image Send")
-
-		#send txt message
-		client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		client_socket.connect(("18.191.105.248", 5001))
-		print("connecting...")  
-		
-		client_socket.send(2)  #notice that client will send 'text'
-
-		f = open("output.txt", 'r')
-		innerText = f.read()
-		
-		f.close()
-		
-		clinet_socket.send(innerText)
-		client_socket_close()
-				
-		break
-	except:
-		print("file is not created...") 
-		time.sleep(3)
+def strSlasher(string):
+    str = string.encode()
+    str.rstrip('\n')
+    print(string)
+    time.sleep(120)
 
 
 
 
+# connect to server.....
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((ipadr, 5001))
+print("connecting...")
+
+# file open
+print("open  " + var1)
+file = open(var1, "rb")
+img_size = os.path.getsize(var1)
+img = file.read(img_size)
+file.close()
+
+# save file-change time
+mtime = os.path.getmtime(var1)
+
+# save the image in the socket
+client_socket.sendall(img)
+
+client_socket.close()
+print("Finish Image Send")
+
+# send txt message
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((ipadr, 5001))
+print("connecting...")
+
+print("target file open")
+f = open("output.txt", 'rt')
+
+print("reading file..")
+innerText = f.read().splitlines()
+size = len(innerText)
+message = innerText[size-1]
+message = message.encode()
+
+print(message)
+#strSlasher(innerText)
+
+#print(newtxt)
+
+f.close()
+
+print("text sending")
+client_socket.sendall(message)
+client_socket.close()
 
 time.sleep(3)
 
-#if file changed, send again
+# if file changed, send again
 while True:
 
-	if os.path.getmtime(var1) > mtime:
-		#connect to server			
-		client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)		
-		client_socket.connect(("18.191.105.248", 5001))
-		print("connecting...")  
-		client_socket.send(1)  #notice that client will send 'image'
+    if os.path.getmtime(var1) > mtime:
+        # connect to server
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((ipadr, 5001))
+        print("connecting...")
 
-		# file open 
-		print("open  " + var1)
-		file = open(var1, "rb")
-		img_size = os.path.getsize(var1)
-		img = file.read(img_size)  
-		file.close()
+        # file open
+        print("open  " + var1)
+        file = open(var1, "rb")
+        img_size = os.path.getsize(var1)
+        img = file.read(img_size)
+        file.close()
 
-		# save file-change time
-		mtime = os.path.getmtime(var1)
-    
-		# save the image in the socket 
-		client_socket.sendall(img)
+        # save file-change time
+        mtime = os.path.getmtime(var1)
 
-		client_socket.close()
-		print("Finish Image Send ")
-		#send txt message
-		client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		client_socket.connect(("18.191.105.248", 5001))
-		print("connecting...")  
-		
-		f = open("output.txt", 'r')
-		client_socket.send(2)  #notice that client will send 'text'
+        # save the image in the socket
+        client_socket.sendall(img)
 
-		innerText = f.read()
-		f.close()
-		
-		clinet_socket.send(innerText)
-		client_socket_close()
+        client_socket.close()
+        print("Finish Image Send ")
 
-	else: 
-		print('nothing to do...')
-		
+        # send txt message
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((ipadr, 5001))
+        print("connecting...")
 
-	#check every 3 second
-	time.sleep(3)
-	
-		
+        print("target file open")
+        f = open("output.txt", 'rt')
 
+        print("reading file..")
+        innerText = f.read().splitlines()
+        size = len(innerText)
+        message = innerText[size - 1]
+        message = message.encode()
 
+        f.close()
 
+        print("text sending")
+        client_socket.send(message)
+        client_socket.close()
+
+        time.sleep(3)
+
+    else:
+        print('nothing to do...')
+
+    # check every 3 second
+    time.sleep(3)
