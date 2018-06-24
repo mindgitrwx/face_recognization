@@ -5,15 +5,15 @@ def timeclassify(string):
     hour = int(newstr[3])
     
     if 0 <= hour < 6:
-        return 1
-    elif 6 <= hour < 12:
-        return 2
-    elif 12 <= hour < 18:
-        return 3
-    elif 18 <= hour < 24:
-        return 4
-    else:
         return 0
+    elif 6 <= hour < 12:
+        return 1
+    elif 12 <= hour < 18:
+        return 2
+    elif 18 <= hour < 24:
+        return 3
+    else:
+        return -1
 
 
 #print(timeparser(str))
