@@ -49,8 +49,8 @@ angry=[0,0,0,0]
 # row[1] emotion = {0,1,2,3} 
 # row[2] time ={0,1,2,3}
 for row in cur.fetchall():
-	currentE = row[1]
-	currentT = row[2]
+	currentE = int(row[1])
+	currentT = int(row[2])
 	if currentE == 0 :
 		happy[currentT]+=1
 	elif currentE == 1 :
