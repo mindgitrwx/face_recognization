@@ -9,7 +9,7 @@ import sys
 
 
 
-def fileNameCreater(flag):
+def fileNameCreater():
     dte = time.localtime()
     Year = dte.tm_year
     Mon = dte.tm_mon
@@ -18,10 +18,7 @@ def fileNameCreater(flag):
     Hour = dte.tm_hour
     Min = dte.tm_min
     Sec = dte.tm_sec
-    if flag==0:
-        imgFileName = str(Year) + '_' + str(Mon) + '_' + str(Day) + '_' + str(Hour) + '_' + str(Min) + '_' + str(Sec) + '.jpg'
-    elif flag==1:
-        imgFileName = str(Year) + '_' + str(Mon) + '_' + str(Day) + '_' + str(Hour) + '_' + str(Min) + '_' + str(Sec) + '.txt'
+    imgFileName = str(Year) + '_' + str(Mon) + '_' + str(Day) + '_' + str(Hour) + '_' + str(Min) + '_' + str(Sec)
 
     return imgFileName
 
@@ -34,6 +31,8 @@ server_socket.listen(5)
 print("TCPServer Waiting for client on port 5000")
 
 flag=0
+fileName = fileNameCreater()
+
 while True:
 
     
@@ -41,7 +40,6 @@ while True:
 
     print("I got a connection from ", address)
 
-    fileName = fileNameCreater(flag)
     data = None
 
    # extension = client_socket.recv(1024)
@@ -59,7 +57,7 @@ while True:
                 else:
                     break
 
-        img_file = open(fileName, "wb")
+        img_file = open(fileName+'.jpg', "wb")
         print(sys.getsizeof(data))
         img_file.write(data)
         img_file.close()
@@ -72,14 +70,15 @@ while True:
         print (innerText)
         #innerText = str(innerText)
         print (innerText)
-        txt_file = open(fileName, 'w')
+        txt_file = open(fileName+'.txt', 'w')
         txt_file.write(innerText.decode())
         txt_file.close()
         print("Finish ")
         flag=0
+        fileName = fileNameCreater()
+
     
     
-    fileName=""
    
 
 
