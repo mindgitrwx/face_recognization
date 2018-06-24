@@ -7,6 +7,25 @@ import os
 import MySQLdb
 
 
+def timeclassify(string):
+    newstr = string.split('_')
+    hour = int(newstr[3])
+    
+    if 0 <= hour < 6:
+        return 0
+    elif 6 <= hour < 12:
+        return 1
+    elif 12 <= hour < 18:
+        return 2
+    elif 18 <= hour < 24:
+        return 3
+    else:
+        return -1
+
+
+#print(timeparser(str))
+
+
 def fileName():
     dte = time.localtime()
     Year = dte.tm_year
@@ -50,7 +69,7 @@ angry=[0,0,0,0]
 # row[2] time ={0,1,2,3}
 for row in cur.fetchall():
 	currentE = int(row[1])
-	currentT = int(row[2])
+	currentT = timeclassify(row[2])
 	if currentE == 0 :
 		happy[currentT]+=1
 	elif currentE == 1 :
