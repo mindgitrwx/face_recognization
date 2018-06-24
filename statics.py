@@ -4,6 +4,8 @@ import numpy as np
 import time
 import sys
 import os
+import MySQLdb
+
 
 def fileName():
     dte = time.localtime()
@@ -19,15 +21,61 @@ def fileName():
 
 
 
-timeline = ['09:00~11:00','11:00~13:00','13:00~17:00','17:00~21:00']
+timeline = ['00:00~06:00','06:00~12:00','12:00~18:00','18:00~24:00']
 
 
 
 N = 4
-happy = [5,2,4,5]
-neutral  = [6,7,9,10]
-sad = [1,0,4,3]
-angry = [2,3,0,1]
+
+db = MySQLdb.connect(host="localhost",    # your host, usually localhost
+                     user="root",         # your username
+                     passwd="",  # your password
+                     db="customers")        # name of the data base
+
+# you must create a Cursor object. It will let
+#  you execute all the queries you need
+cur = db.cursor()
+
+# Use all the SQL you like
+cur.execute("SELECT * FROM cus_info")
+
+# print all the first cell of all the rows
+
+happy=[0,0,0,0]
+neutral=[0,0,0,0]
+sad=[0,0,0,0]
+angry=[0,0,0,0]
+
+# row[1] emotion = {0,1,2,3} 
+# row[2] time ={0,1,2,3}
+for row in cur.fetchall():
+	currentE = row[1]
+	currentT = row[2]
+	if currentE == 0 :
+		happy[currentT]+=1
+	elif currentE == 1 :
+		neutral[currentT]+=1
+	elif currentE == 2 :
+		sad[currentT]+=1
+	elif currentE == 3 :
+		angry[currentT]+=1
+	
+
+db.close()
+
+print(happy)
+print(neutral)
+print(sad)
+print(angry)
+
+#happy = [5,2,4,5]
+#neutral  = [6,7,9,10]
+#sad = [1,0,4,3]
+#angry = [2,3,0,1]
+
+
+
+
 
 baseforsad = [happy[0]+neutral[0],happy[1]+neutral[1],happy[2]+neutral[2],happy[3]+neutral[3]]
 baseforangry =[baseforsad[0]+sad[0],baseforsad[1]+sad[1],baseforsad[2]+sad[2],baseforsad[3]+sad[3]]
@@ -50,6 +98,8 @@ plt.legend((p1[0], p2[0], p3[0], p4[0]), ('Happy', 'Neutral','Sad','Angry'))
 currenttime = fileName()
 plt.savefig(currenttime)
 plt.show()
+
+
 
 
 
