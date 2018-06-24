@@ -70,10 +70,10 @@ while True:
         print("I got some text for you!")
         innerText = client_socket.recv(1024)
         print (innerText)
-        innerText = str(innerText)
+        #innerText = str(innerText)
         print (innerText)
         txt_file = open(fileName, 'w')
-        txt_file.write(innerText)
+        txt_file.write(innerText.decode())
         txt_file.close()
         print("Finish ")
         flag=0
